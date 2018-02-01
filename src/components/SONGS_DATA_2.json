@@ -1,84 +1,96 @@
 [
   {
     "videoId":"cE6wxDqdOV0",
-    "meta":"Video Games — Lana Del Rey",
+    "meta1":"Video Games",
+    "meta2":"Lana Del Rey — Born to Die",
     "mood":"chill",
     "isFresh":false,
     "coverUrl":"https://images.genius.com/e9291d327d0b03c3df3380946fbfc37e.1000x1000x1.png"
   },
   {
     "videoId":"pstVCGyaUBM",
-    "meta":"Buzzcut Season — Lorde — Pure Heroine",
+    "meta1":"Buzzcut Season",
+    "meta2":"Lorde — Pure Heroine",
     "mood":"chill",
     "isFresh":false,
     "coverUrl":"http://wsum.org/wp-content/uploads/2018/01/lorde-melodrama-album-review.jpg"
   },
   {
     "videoId":"Kp7eSUU9oy8",
-    "meta":"Redbone — Childish Gambino - “Awaken, my love!”",
+    "meta1":"Redbone",
+    "meta2":"Childish Gambino - “Awaken, my love!”",
     "mood":"chill",
     "isFresh":true,
     "coverUrl":"https://is5-ssl.mzstatic.com/image/thumb/Music71/v4/00/d0/d7/00d0d743-b0de-31d8-09eb-0796269bb555/UMG_cvrart_00044003187658_01_RGB72_1800x1800_16UMGIM77118.jpg/1200x630bb.jpg"
   },
   {
     "videoId":"ox7RsX1Ee34",
-    "meta":"LOVE. ft. Zacari — Kendrick Lamar — DAMN",
+    "meta1":"LOVE. ft. Zacari",
+    "meta2":"Kendrick Lamar — DAMN",
     "mood":"chill",
     "isFresh":true,
     "coverUrl":"https://www.theskylineview.com/wp-content/uploads/2017/05/IMG_3754-1000x1000.jpg"
   },
   {
     "videoId":"wl9tcrIeJ48",
-    "meta":"Say Something Loving — The xx - I see you",
+    "meta1":"Say Something Loving",
+    "meta2":"The xx - I see you",
     "mood":"chill",
     "isFresh":false,
     "coverUrl":"http://www.brooklynvegan.com/files/2016/11/xx-i-see-you.jpg"
   },
   {
     "videoId":"ntLtNTUCuII",
-    "meta":"Danger — Migos & Marshmello — from Bright: The Album",
+    "meta1":"Danger",
+    "meta2":"Migos & Marshmello — from Bright: The Album",
     "mood":"energy",
     "isFresh":true,
     "coverUrl":"http://www.atlanticrecords.com/sites/g/files/g2000003466/f/201711/BRIGHT_COVER_FINAL-min.jpg"
   },
   {
     "videoId":"hBA0PUQCvIA",
-    "meta":"Ascension — Gorillaz — Humanz",
+    "meta1":"Ascension",
+    "meta2":"Gorillaz — Humanz",
     "mood":"energy",
     "isFresh":true,
     "coverUrl":"http://www.prettyneatgrooves.com/wp-content/uploads/2017/07/humanz_1200x-1493309049.jpg"
   },
   {
     "videoId":"L3wKzyIN1yk",
-    "meta":"Human — Rag'n'Bone Man — Human",
+    "meta1":"Human",
+    "meta2":"Rag'n'Bone Man — Human",
     "mood":"energy",
     "isFresh":true,
     "coverUrl":"http://justlikemusic.ng/jlm/wp-content/uploads/2017/03/005479791_500.jpg"
   },
   {
     "videoId":"QT1Z3dEjJ_o",
-    "meta":"Chinstrap Penguins — Jacob Shea & Jasha Klebe — Planet Earth 2",
+    "meta1":"Chinstrap Penguins",
+    "meta2":"Jacob Shea & Jasha Klebe — Planet Earth 2",
     "mood":"classy",
     "isFresh":true,
     "coverUrl":"http://filmmusicreporter.com/wp-content/uploads/2016/10/planet-earth-ii-1.jpg"
   },
   {
     "videoId":"ZpA0l2WB86E",
-    "meta":"Serenade — Schubert",
+    "meta1":"Serenade",
+    "meta2":"Schubert",
     "mood":"classy",
     "isFresh":false,
     "coverUrl":"http://en.es-static.us/upl/2013/09/sunrise-red-sea-Graham-Telford-e1489764712368.jpg"
   },
   {
     "videoId":"KpOtuoHL45Y",
-    "meta":"Liebestraum — Franz Liszt",
+    "meta1":"Liebestraum",
+    "meta2":"Franz Liszt",
     "mood":"classy",
     "isFresh":false,
     "coverUrl":"http://digitalk7.com/mus/Classical/Franz%20Liszt/folder.jpg"
   },
   {
     "videoId":"-Cx5lcqF_Qo",
-    "meta":"Harvey Two-Face — Hans Zimmer & James Newton Howard — The Dark Knight",
+    "meta1":"Harvey Two-Face",
+    "meta2":"Hans Zimmer & James Newton Howard — The Dark Knight",
     "mood":"classy",
     "isFresh":false,
     "coverUrl":"https://i.ytimg.com/vi/94TAFSMdkvk/maxresdefault.jpg"

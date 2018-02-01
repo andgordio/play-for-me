@@ -23,6 +23,26 @@ export default {
         date: 'prototypeDate',
         iterations: [
           {
+            name: 'C',
+            description: 'variantDescription',
+            versions: [
+              {
+                name: '1',
+                description: 'versionDescription'
+              }
+            ]
+          },
+          {
+            name: 'B',
+            description: 'variantDescription',
+            versions: [
+              {
+                name: '1',
+                description: 'versionDescription'
+              }
+            ]
+          },
+          {
             name: 'A',
             description: 'variantDescription',
             versions: [
