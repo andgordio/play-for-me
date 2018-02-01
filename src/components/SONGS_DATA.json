@@ -1,0 +1,44 @@
+[
+  {
+    "videoId":"cE6wxDqdOV0",
+    "meta":"Video Games — Lana Del Rey",
+    "mood":"chill",
+    "isFresh":false,
+    "coverUrl":"https://images.genius.com/e9291d327d0b03c3df3380946fbfc37e.1000x1000x1.png"
+  },
+  {
+    "videoId":"pstVCGyaUBM",
+    "meta":"Buzzcut Season — Lorde — Pure Heroine",
+    "mood":"chill",
+    "isFresh":false,
+    "coverUrl":"http://wsum.org/wp-content/uploads/2018/01/lorde-melodrama-album-review.jpg"
+  },
+  {
+    "videoId":"ntLtNTUCuII",
+    "meta":"Danger — Migos & Marshmello — from Bright: The Album",
+    "mood":"energy",
+    "isFresh":true,
+    "coverUrl":"http://www.atlanticrecords.com/sites/g/files/g2000003466/f/201711/BRIGHT_COVER_FINAL-min.jpg"
+  },
+  {
+    "videoId":"tvTRZJ-4EyI",
+    "meta":"HUMBLE. — Kendrick Lamar — DAMN",
+    "mood":"energy",
+    "isFresh":true,
+    "coverUrl":"https://www.theskylineview.com/wp-content/uploads/2017/05/IMG_3754-1000x1000.jpg"
+  },
+  {
+    "videoId":"QT1Z3dEjJ_o",
+    "meta":"Chinstrap Penguins — Jacob Shea & Jasha Klebe — Planet Earth 2",
+    "mood":"classy",
+    "isFresh":true,
+    "coverUrl":"http://filmmusicreporter.com/wp-content/uploads/2016/10/planet-earth-ii-1.jpg"
+  },
+  {
+    "videoId":"-Cx5lcqF_Qo",
+    "meta":"Harvey Two-Face — Hans Zimmer & James Newton Howard — The Dark Knight",
+    "mood":"classy",
+    "isFresh":false,
+    "coverUrl":"https://i.ytimg.com/vi/94TAFSMdkvk/maxresdefault.jpg"
+  }
+]
