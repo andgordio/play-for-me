@@ -1,17 +1,30 @@
 <template>
   <div  class="flex flex-col h-screen w-screen bg-black text-white overflow-hidden">
-    <div  class="absolute w-screen pin-l bg-cover"
-          style="top: -100px; height: calc(100vh + 100px);"
+    <div  class="absolute bg-cover"
+          style="top: -100px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 200px); transition: .5s"
           :style="{ 'background-image': 'url(' + videoBackground + ')' }"
           :class="{blurry: view !== 'player'}"></div>
+    <div  class="absolute bg-cover w-screen h-screen"
+          style="top: -50px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 100px);"
+          :style="{ 'background-image': 'url(' + videoCurtain + ')' }"></div>
     <div class="flex-1 z-10">
-      <HomeView       v-if = "view === 'home'"
-                      @goTo = "goFromHomeTo($event)"/>
 
-      <MoodView       v-if = "view === 'mood'"
-                      @goTo = "goFromMoodTo($event)"/>
+      <transition name="playerControls" appear>
+        <HomeView     v-if = "view === 'home'"
+                      class="absolute pin-t pin-l w-full"
+                      style="height: calc(100vh - 114px)"
+                      @goTo = "goFromHomeTo($event)"/></transition>
 
-      <PlayerView     v-if = "view === 'player'"
+      <transition name="playerControls" appear>
+        <MoodView     v-if = "view === 'mood'"
+                      class="absolute pin-t pin-l w-full"
+                      style="height: calc(100vh - 114px)"
+                      @goTo = "goFromMoodTo($event)"/></transition>
+
+      <transition name="playerControls" appear>
+        <PlayerView   v-if = "view === 'player'"
+                      class="absolute pin-t pin-l w-full"
+                      style="height: calc(100vh - 114px)"
                       :isPlaying = "isPlaying"
                       :didPlayLongEnough = "didPlayLongEnough"
                       :isRepeatOn = "isRepeatOn"
@@ -24,6 +37,7 @@
                       @liked = "playbackLiked"
                       @playbackRepeatOn = "playbackRepeatOn"
                       @playbackRepeatOff = "playbackRepeatOff"/>
+      </transition>
     </div>
     <PlaybackInfo     v-if = "didStartPlaying || doShowNotification"
                       class="z-20"
@@ -32,6 +46,7 @@
                       :meta2 = "videoMeta2"
                       :doShowNotification = "doShowNotification"
                       :notificationMessage = "notificationMessage"
+                      :notificationMessage2 = "notificationMessage2"
                       @containerPressed = "containerPressed"/>
 
     <!-- <Notification     v-if = "doShowNotification"
@@ -82,6 +97,7 @@ export default {
       videoMeta1: '',
       videoMeta2: '',
       videoBackground: 'http://wsum.org/wp-content/uploads/2018/01/lorde-melodrama-album-review.jpg',
+      videoCurtain: 'https://firebasestorage.googleapis.com/v0/b/play-4-me.appspot.com/o/curtains%2Fcurtain-gorillaz.png?alt=media&token=0e857c08-c108-44de-9033-415050ca2380',
       // playlists
       songs: [],
       energy: [],
@@ -167,21 +183,25 @@ export default {
       this.playbackPlay()
     },
     playbackDisliked () {
-      this.notificationMessage = 'You disliked the song :('
+      this.notificationMessage = 'You disliked the song 🙉'
+      this.notificationMessage2 = 'Let\'s try something different'
       this.showNotification(true)
     },
     playbackLiked () {
-      this.notificationMessage = 'You liked the song :)'
+      this.notificationMessage = 'You liked the song 🤟'
+      this.notificationMessage2 = 'We\'ll find more songs like this for you'
       this.showNotification(true)
     },
     playbackRepeatOn () {
       this.isRepeatOn = true
       this.notificationMessage = 'Repeat is on'
+      this.notificationMessage2 = ' '
       this.showNotification(true)
     },
     playbackRepeatOff () {
       this.isRepeatOn = false
       this.notificationMessage = 'Repeat is off'
+      this.notificationMessage2 = ' '
       this.showNotification(true)
     },
     // PlaybackInfo
@@ -220,31 +240,31 @@ export default {
     },
     setPlaylist (playlist) {
       this.didChooseNewSong = true
-      this.notificationMessage = 'Playing '
+      this.notificationMessage = ''
       switch (playlist) {
         case 'smart':
-          this.notificationMessage += 'smart playlist '
+          this.notificationMessage += 'Smart playlist'
           this.chosenPlaylist = this.songs
           break
         case 'fresh':
-          this.notificationMessage += 'fresh playlist '
+          this.notificationMessage += 'Fresh playlist'
           this.chosenPlaylist = this.fresh
           break
         case 'energy':
-          this.notificationMessage += 'energizing playlist '
+          this.notificationMessage += 'Energizing playlist'
           this.chosenPlaylist = this.energy
           break
         case 'chill':
-          this.notificationMessage += 'relaxing playlist '
+          this.notificationMessage += 'Relaxing playlist'
           this.chosenPlaylist = this.chill
           break
         case 'classy':
         default:
-          this.notificationMessage += 'classical playlist '
+          this.notificationMessage += 'Classical playlist'
           this.chosenPlaylist = this.classy
       }
       this.shuffleArray(this.chosenPlaylist)
-      this.notificationMessage += 'now'
+      this.notificationMessage2 = 'Playing now'
       this.showNotification(true)
       this.chosenSong = 0
       this.pickSong()
@@ -255,6 +275,7 @@ export default {
       this.videoMeta1 = this.chosenPlaylist[this.chosenSong].meta1
       this.videoMeta2 = this.chosenPlaylist[this.chosenSong].meta2
       this.videoBackground = this.chosenPlaylist[this.chosenSong].coverUrl
+      this.videoCurtain = this.chosenPlaylist[this.chosenSong].curtainUrl
       this.playbackPlay()
     },
     shuffleArray (array) {
@@ -277,5 +298,50 @@ export default {
 </script>
 
 <style lang="scss">
+/*
+  Player controls
+*/
 
+.playerControls-enter-active {
+  transition: all 1.4s .3s;
+}
+.playerControls-leave-active {
+  transition: all .3s;
+}
+.playerControls-enter, .playerControls-leave-to  {
+  opacity: 0.99;
+}
+
+.playerControls-enter-active .playbackButton1 {
+  transition: all .4s .4s;
+}
+.playerControls-leave-active .playbackButton1 {
+  transition: all .3s;
+}
+.playerControls-enter .playbackButton1, .playerControls-leave-to .playbackButton1  {
+  transform: scale(0.4);
+  opacity: 0;
+}
+
+.playerControls-enter-active .playbackButton2 {
+  transition: all .3s .3s;
+}
+.playerControls-leave-active .playbackButton2 {
+  transition: all .3s;
+}
+.playerControls-enter .playbackButton2, .playerControls-leave-to .playbackButton2  {
+  transform: scale(0.4);
+  opacity: 0;
+}
+
+.playerControls-enter-active .playbackButton3 {
+  transition: all .4s .4s;
+}
+.playerControls-leave-active .playbackButton3 {
+  transition: all .3s;
+}
+.playerControls-enter .playbackButton3, .playerControls-leave-to .playbackButton3  {
+  transform: scale(0.4);
+  opacity: 0;
+}
 </style>

@@ -1,20 +1,28 @@
 <template>
   <div class="flex items-center h-full"> <!--overflow-scroll-->
-    <div class="flex-1 text-center">
+    <div class="flex-1 text-center playbackButton1">
       <div>
-        <span v-if="!isRepeatOn" class="icon ion-skip-backward text-12xl" @click="playbackPrevious()"/>
-        <span v-else class="icon ion-loop text-12xl" @click="playbackRepeatClicked()"/>
+        <!-- <span v-if="!isRepeatOn" class="icon ion-skip-backward text-12xl" @click="playbackPrevious()"/>
+        <span v-else class="icon ion-loop text-12xl" @click="playbackRepeatClicked()"/> -->
+        <span v-if="!isRepeatOn" @click="playbackPrevious()">
+          <img src="./../../../assets/icn-prev.png" style="width: 186px; height: 186px;" alt="">
+        </span>
+        <span v-if="isRepeatOn" @click="playbackRepeatClicked()">
+          <img src="./../../../assets/icn-repeat.png" style="width: 186px; height: 186px;" alt="">
+        </span>
       </div>
     </div>
-    <div class="flex-1 text-center">
+    <div class="flex-1 text-center playbackButton2">
       <div @click="playbackPlay()">
-        <span v-if="!isPlaying" class="icon ion-play text-20xl"/>
-        <span v-else class="icon ion-pause text-20xl"/>
+        <!-- <span v-if="!isPlaying" class="icon ion-play text-20xl"/>
+        <span v-else class="icon ion-pause text-20xl"/> -->
+        <img v-if="!isPlaying" src="./../../../assets/icn-play.png" style="width: 186px; height: 186px;" alt="">
+        <img v-if="isPlaying" src="./../../../assets/icn-pause.png" style="width: 186px; height: 186px;" alt="">
       </div>
     </div>
-    <div class="flex-1 text-center">
+    <div class="flex-1 text-center playbackButton3" @click="playbackNext()">
       <div>
-        <span class="icon ion-skip-forward text-12xl" @click="playbackNext()"/>
+        <img src="./../../../assets/icn-next.png" style="width: 186px; height: 186px;" alt="">
       </div>
     </div>
   </div>
