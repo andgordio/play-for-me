@@ -1,5 +1,5 @@
 <template>
-  <div  class="flex flex-col h-screen w-screen bg-black text-white overflow-hidden">
+  <div  class="h-screen w-screen bg-black text-white">
     <div  class="absolute bg-cover"
           style="top: -100px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 200px); transition: .5s"
           :style="{ 'background-image': 'url(' + videoBackground + ')' }"
@@ -7,18 +7,24 @@
     <div  class="absolute bg-cover w-screen h-screen"
           style="top: -50px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 100px);"
           :style="{ 'background-image': 'url(' + videoCurtain + ')' }"></div>
-    <div class="flex-1 z-10">
+    <div  class="absolute w-screen h-screen"
+            style="top: -50px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 100px); background-color: rgba(0,0,0,0.3)"></div>
+    <transition name="lightOff" appear>
+      <div  class="absolute w-screen h-screen"
+            style="top: -50px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 100px); background-color: black"
+            v-if="isLightOff"></div></transition>
+    <div class="z-20">
 
-      <transition name="playerControls" appear>
+      <transition name="navControls" appear>
         <HomeView     v-if = "view === 'home'"
-                      class="absolute pin-t pin-l w-full"
-                      style="height: calc(100vh - 114px)"
+                      class="absolute pin-t pin-l w-full regularNav"
+                      :class="{shorterNav: didStartPlaying || doShowNotification}"
                       @goTo = "goFromHomeTo($event)"/></transition>
 
-      <transition name="playerControls" appear>
+      <transition name="navControls" appear>
         <MoodView     v-if = "view === 'mood'"
-                      class="absolute pin-t pin-l w-full"
-                      style="height: calc(100vh - 114px)"
+                      class="absolute pin-t pin-l w-full regularNav"
+                      :class="{shorterNav: didStartPlaying || doShowNotification}"
                       @goTo = "goFromMoodTo($event)"/></transition>
 
       <transition name="playerControls" appear>
@@ -40,7 +46,7 @@
       </transition>
     </div>
     <PlaybackInfo     v-if = "didStartPlaying || doShowNotification"
-                      class="z-20"
+                      class="z-10"
                       :view = "view"
                       :meta1 = "videoMeta1"
                       :meta2 = "videoMeta2"
@@ -52,7 +58,8 @@
     <!-- <Notification     v-if = "doShowNotification"
                       :message = "notificationMessage"/> -->
 
-    <StatusBar        @goBack="goBack()"/>
+    <StatusBar        :view = "view"
+                      @goBack="goBack()"/>
     <div class="absolute" style="top: 1000px; right: 1000px;">
       <!--  -->
       <youtube :player-vars="{ start: 0, autoplay: 0, allowfullscreen: 0, playsinline: 1}" :video-id="videoId" @ready="videoReady" @ended="playbackNextAuto"></youtube>
@@ -98,6 +105,8 @@ export default {
       videoMeta2: '',
       videoBackground: 'http://wsum.org/wp-content/uploads/2018/01/lorde-melodrama-album-review.jpg',
       videoCurtain: 'https://firebasestorage.googleapis.com/v0/b/play-4-me.appspot.com/o/curtains%2Fcurtain-gorillaz.png?alt=media&token=0e857c08-c108-44de-9033-415050ca2380',
+      //
+      isLightOff: false,
       // playlists
       songs: [],
       energy: [],
@@ -274,8 +283,20 @@ export default {
       this.videoId = this.chosenPlaylist[this.chosenSong].videoId
       this.videoMeta1 = this.chosenPlaylist[this.chosenSong].meta1
       this.videoMeta2 = this.chosenPlaylist[this.chosenSong].meta2
-      this.videoBackground = this.chosenPlaylist[this.chosenSong].coverUrl
-      this.videoCurtain = this.chosenPlaylist[this.chosenSong].curtainUrl
+      //
+      // 1. fade to dark a black layer
+      this.isLightOff = true
+      // 2. change image and curtain
+      setTimeout(() => {
+        this.videoBackground = this.chosenPlaylist[this.chosenSong].coverUrl
+        this.videoCurtain = this.chosenPlaylist[this.chosenSong].curtainUrl
+      }, 300)
+      // 3. fade to transparent a black layer a 1.5 seconds later
+      setTimeout(() => {
+        this.isLightOff = false
+      }, 1200)
+      //
+      //
       this.playbackPlay()
     },
     shuffleArray (array) {
@@ -298,6 +319,13 @@ export default {
 </script>
 
 <style lang="scss">
+.regularNav {
+  height: calc(100vh - 54px)
+}
+
+.shorterNav {
+  height: calc(100vh - 144px)
+}
 /*
   Player controls
 */
@@ -344,4 +372,69 @@ export default {
   transform: scale(0.4);
   opacity: 0;
 }
+
+/*
+  Light off
+*/
+
+.lightOff-enter-active, .lightOff-leave-active {
+  transition: opacity .3s;
+}
+.lightOff-enter, .lightOff-leave-to  {
+  opacity: 0;
+}
+
+/*
+  Player controls
+*/
+
+.navControls-enter-active {
+  transition: all 1.4s .3s;
+}
+.navControls-leave-active {
+  transition: all .3s;
+}
+.navControls-enter, .navControls-leave-to  {
+  opacity: 0.99;
+}
+
+.navControls-enter-active .playbackButton1 {
+  transition: all .4s .4s;
+}
+.navControls-leave-active .playbackButton1 {
+  transition: all .3s;
+}
+.navControls-enter .playbackButton1, .navControls-leave-to .playbackButton1  {
+  transform: scale(1.8) translate(-100px, 0);
+  opacity: 0;
+}
+
+.navControls-enter-active .playbackButton2 {
+  transition: all .3s .3s;
+}
+.navControls-leave-active .playbackButton2 {
+  transition: all .3s;
+}
+.navControls-enter .playbackButton2, .navControls-leave-to .playbackButton2  {
+  transform: scale(1.8);
+  opacity: 0;
+}
+
+.navControls-enter-active .playbackButton3 {
+  transition: all .4s .4s;
+}
+.navControls-leave-active .playbackButton3 {
+  transition: all .3s;
+}
+.navControls-enter .playbackButton3, .navControls-leave-to .playbackButton3  {
+  transform: scale(1.8) translate(100px, 0);
+  opacity: 0;
+}
+
+//
+
+// .navControls-enter .selectedButton, .navControls-leave-to .selectedButton  {
+//   transform: scale(2.8) !important;
+// }
+
 </style>

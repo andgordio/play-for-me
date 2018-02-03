@@ -1,7 +1,7 @@
 <template>
   <div class="absolute pin-l w-full px-6" style="bottom: 50px;" @click="containerPressed()">
-    <div class="w-full text-center pt-1 pb-2 rounded" :class="{'bg-box': view !== 'player'}">
-      <div class="text-4xl overflow-hidden h-12 relative">
+    <div class="w-full text-center pt-2 pb-3 rounded" :class="{'bg-box': view !== 'player'}" style="transition: all .3s;">
+      <div class="text-3xl overflow-hidden h-10 relative">
         <transition name="titlePlayback" appear>
           <div v-if="!doShowNotification" class="absolute w-full">
             {{meta1}}
