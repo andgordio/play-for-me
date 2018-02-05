@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center h-full"> <!--overflow-scroll-->
-    <div class="flex-1 text-center playbackButton1" :class="{selectedButton: view === 'mood'}" @click="goTo('mood')">
+    <div class="flex-1 text-center playbackButton1" @click="goTo('mood')">
       <div>
         <img src="./../../../assets/icn-mood.png" style="width: 186px; height: 186px;" alt="">
         <!-- <span class="icon ion-android-happy text-12xl"/> -->
@@ -9,7 +9,7 @@
         Mood
       </div>
     </div>
-    <div class="flex-1 text-center playbackButton2" :class="{selectedButton: view === 'smart'}" @click="goTo('smart')">
+    <div class="flex-1 text-center playbackButton2" @click="goTo('smart')">
       <div>
         <!-- <span class="icon ion-flash text-20xl"/> -->
         <img src="./../../../assets/icn-smart.png" style="width: 186px; height: 186px;" alt="">
@@ -18,7 +18,7 @@
         Smart
       </div>
     </div>
-    <div class="flex-1 text-center playbackButton3" :class="{selectedButton: view === 'fresh'}" @click="goTo('fresh')">
+    <div class="flex-1 text-center playbackButton3" @click="goTo('fresh')">
       <div>
         <img src="./../../../assets/icn-fresh.png" style="width: 186px; height: 186px;" alt="">
         <!-- <span class="icon ion-leaf text-12xl"/> -->
@@ -36,15 +36,12 @@ export default {
   name: '',
   data () {
     return {
-      view: 'home'
+      //
     }
   },
   methods: {
     goTo (view) {
-      this.view = view
-      setTimeout(() => {
-        this.$emit('goTo', view)
-      }, 100)
+      this.$emit('goTo', view)
     }
   }
 }

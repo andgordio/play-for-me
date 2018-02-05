@@ -12,21 +12,29 @@
     <transition name="lightOff" appear>
       <div  class="absolute w-screen h-screen"
             style="top: -50px; left: -50px; width: calc(100vw + 100px); height: calc(100vh + 100px); background-color: black"
+            :class="{disliked: doPlayDislikeAnimation}"
             v-if="isLightOff"></div></transition>
     <div class="z-20">
 
-      <transition name="navControls" appear>
+      <transition :name="navControlsTransition" appear>
         <HomeView     v-if = "view === 'home'"
                       class="absolute pin-t pin-l w-full regularNav"
                       :class="{shorterNav: didStartPlaying || doShowNotification}"
                       @goTo = "goFromHomeTo($event)"/></transition>
 
-      <transition name="navControls" appear>
+      <transition :name="navControlsTransition" appear>
         <MoodView     v-if = "view === 'mood'"
                       class="absolute pin-t pin-l w-full regularNav"
                       :class="{shorterNav: didStartPlaying || doShowNotification}"
                       @goTo = "goFromMoodTo($event)"/></transition>
-
+      <transition name="hearts">
+        <div  class="absolute w-screen h-screen flex items-center"
+              v-if="doPlayLikeAnimation">
+          <div class="heartsInit">
+            <img src="./../../../assets/icn-hearts.png" style="width: 100%;" alt="">
+          </div>
+        </div>
+      </transition>
       <transition name="playerControls" appear>
         <PlayerView   v-if = "view === 'player'"
                       class="absolute pin-t pin-l w-full"
@@ -45,6 +53,14 @@
                       @playbackRepeatOff = "playbackRepeatOff"/>
       </transition>
     </div>
+    <!-- <transition name="hearts">
+      <div  class="absolute w-screen h-screen flex items-center"
+            v-if="doPlayDislikeAnimation">
+        <div class="heartsInit">
+          <img src="./../../../assets/icn-hearts-broke.png" style="width: 100%;" alt="">
+        </div>
+      </div>
+    </transition> -->
     <PlaybackInfo     v-if = "didStartPlaying || doShowNotification"
                       class="z-10"
                       :view = "view"
@@ -107,6 +123,9 @@ export default {
       videoCurtain: 'https://firebasestorage.googleapis.com/v0/b/play-4-me.appspot.com/o/curtains%2Fcurtain-gorillaz.png?alt=media&token=0e857c08-c108-44de-9033-415050ca2380',
       //
       isLightOff: false,
+      navControlsTransition: 'navCenter',
+      doPlayLikeAnimation: false,
+      doPlayDislikeAnimation: false,
       // playlists
       songs: [],
       energy: [],
@@ -125,23 +144,41 @@ export default {
       this.isBackToMood = view === 'mood'
       switch (view) {
         case 'mood':
-          this.view = view
+          this.navControlsTransition = 'playerControls'
+          setTimeout(() => {
+            this.view = view
+          }, 10)
           this.isBackToMood = true
           break
         case 'smart':
-          this.view = 'player'
-          this.setPlaylist('smart')
+          this.navControlsTransition = 'navCenter'
+          setTimeout(() => {
+            this.setPlaylist('smart')
+            this.view = 'player'
+          }, 10)
           break
         case 'fresh':
-          this.view = 'player'
-          this.setPlaylist('fresh')
+          this.navControlsTransition = 'navRight'
+          setTimeout(() => {
+            this.setPlaylist('fresh')
+            this.view = 'player'
+          }, 10)
           break
       }
     },
     // MoodView
     goFromMoodTo (genre) {
-      this.setPlaylist(genre)
-      this.view = 'player'
+      if (genre === 'energy') {
+        this.navControlsTransition = 'navLeft'
+      } else if (genre === 'chill') {
+        this.navControlsTransition = 'navCenter'
+      } else {
+        this.navControlsTransition = 'navRight'
+      }
+      setTimeout(() => {
+        this.setPlaylist(genre)
+        this.view = 'player'
+      }, 10)
     },
     // PlayerView
     playbackPlay () {
@@ -192,14 +229,22 @@ export default {
       this.playbackPlay()
     },
     playbackDisliked () {
-      this.notificationMessage = 'You disliked the song 🙉'
+      this.notificationMessage = 'You disliked the song'
       this.notificationMessage2 = 'Let\'s try something different'
       this.showNotification(true)
+      this.doPlayDislikeAnimation = true
+      setTimeout(() => {
+        this.doPlayDislikeAnimation = false
+      }, 1500)
     },
     playbackLiked () {
-      this.notificationMessage = 'You liked the song 🤟'
+      this.notificationMessage = 'You liked the song'
       this.notificationMessage2 = 'We\'ll find more songs like this for you'
       this.showNotification(true)
+      this.doPlayLikeAnimation = true
+      setTimeout(() => {
+        this.doPlayLikeAnimation = false
+      }, 1000)
     },
     playbackRepeatOn () {
       this.isRepeatOn = true
@@ -216,14 +261,16 @@ export default {
     // PlaybackInfo
     containerPressed () {
       if (this.view !== 'player') {
-        this.view = 'player'
+        this.navControlsTransition = 'playerControls'
+        setTimeout(() => {
+          this.view = 'player'
+        }, 10)
       }
     },
     // StatusBar
     goBack () {
       switch (this.view) {
         case 'home':
-          alert('no going back from here, bro')
           break
         case 'player':
           if (this.isBackToMood) {
@@ -234,7 +281,10 @@ export default {
           break
         case 'mood':
         default:
-          this.view = 'home'
+          this.navControlsTransition = 'playerControls'
+          setTimeout(() => {
+            this.view = 'home'
+          }, 10)
       }
     },
     // local
@@ -326,6 +376,17 @@ export default {
 .shorterNav {
   height: calc(100vh - 144px)
 }
+
+.heartsInit {
+  width: 100px;
+  margin: 0 auto;
+  transform: scale(80);
+}
+
+.disliked {
+  background: url(./../../../assets/bg-dislike.png) center center no-repeat;
+  background-size: 256px;
+}
 /*
   Player controls
 */
@@ -341,7 +402,7 @@ export default {
 }
 
 .playerControls-enter-active .playbackButton1 {
-  transition: all .4s .4s;
+  transition: all .4s .4s; /*cubic-bezier(.14,1.31,.61,1.33) <- didn't work that well*/
 }
 .playerControls-leave-active .playbackButton1 {
   transition: all .3s;
@@ -388,53 +449,146 @@ export default {
   Player controls
 */
 
-.navControls-enter-active {
+.navCenter-enter-active, .navRight-enter-active, .navLeft-enter-active {
   transition: all 1.4s .3s;
 }
-.navControls-leave-active {
+.navCenter-leave-active, .navRight-leave-active, .navLeft-leave-active {
   transition: all .3s;
 }
-.navControls-enter, .navControls-leave-to  {
+.navCenter-enter, .navCenter-leave-to, .navRight-enter, .navRight-leave-to, .navLeft-enter, .navLeft-leave-to  {
   opacity: 0.99;
 }
 
-.navControls-enter-active .playbackButton1 {
+// CENTER
+
+.navCenter-enter-active .playbackButton1 {
   transition: all .4s .4s;
 }
-.navControls-leave-active .playbackButton1 {
+.navCenter-leave-active .playbackButton1 {
   transition: all .3s;
 }
-.navControls-enter .playbackButton1, .navControls-leave-to .playbackButton1  {
+.navCenter-enter .playbackButton1, .navCenter-leave-to .playbackButton1  {
   transform: scale(1.8) translate(-100px, 0);
   opacity: 0;
 }
 
-.navControls-enter-active .playbackButton2 {
+.navCenter-enter-active .playbackButton2 {
   transition: all .3s .3s;
 }
-.navControls-leave-active .playbackButton2 {
+.navCenter-leave-active .playbackButton2 {
   transition: all .3s;
 }
-.navControls-enter .playbackButton2, .navControls-leave-to .playbackButton2  {
-  transform: scale(1.8);
+.navCenter-enter .playbackButton2, .navCenter-leave-to .playbackButton2  {
+  transform: scale(2.8);
   opacity: 0;
 }
 
-.navControls-enter-active .playbackButton3 {
+.navCenter-enter-active .playbackButton3 {
   transition: all .4s .4s;
 }
-.navControls-leave-active .playbackButton3 {
+.navCenter-leave-active .playbackButton3 {
   transition: all .3s;
 }
-.navControls-enter .playbackButton3, .navControls-leave-to .playbackButton3  {
+.navCenter-enter .playbackButton3, .navCenter-leave-to .playbackButton3  {
   transform: scale(1.8) translate(100px, 0);
   opacity: 0;
 }
 
-//
+// RIGHT
 
-// .navControls-enter .selectedButton, .navControls-leave-to .selectedButton  {
-//   transform: scale(2.8) !important;
-// }
+.navRight-enter-active .playbackButton1 {
+  transition: all .4s .4s;
+}
+.navRight-leave-active .playbackButton1 {
+  transition: all .3s;
+}
+.navRight-enter .playbackButton1, .navRight-leave-to .playbackButton1  {
+  transform: scale(1.8) translate(-150px, 0);
+  opacity: 0;
+}
+
+.navRight-enter-active .playbackButton2 {
+  transition: all .4s .4s;
+}
+.navRight-leave-active .playbackButton2 {
+  transition: all .3s;
+}
+.navRight-enter .playbackButton2, .navRight-leave-to .playbackButton2  {
+  transform: scale(1.8) translate(-150px, 0);
+  opacity: 0;
+}
+
+.navRight-enter-active .playbackButton3 {
+  transition: all .3s .3s;
+}
+.navRight-leave-active .playbackButton3 {
+  transition: all .3s;
+}
+.navRight-enter .playbackButton3, .navRight-leave-to .playbackButton3  {
+  transform: scale(2.8) translate(-50px, 0);
+  opacity: 0;
+}
+
+// LEFT
+
+.navLeft-enter-active .playbackButton1 {
+  transition: all .3s .3s;
+}
+.navLeft-leave-active .playbackButton1 {
+  transition: all .3s;
+}
+.navLeft-enter .playbackButton1, .navLeft-leave-to .playbackButton1  {
+  transform: scale(2.8) translate(50px, 0);
+  opacity: 0;
+}
+
+.navLeft-enter-active .playbackButton2 {
+  transition: all .4s .4s;
+}
+.navLeft-leave-active .playbackButton2 {
+  transition: all .3s;
+}
+.navLeft-enter .playbackButton2, .navLeft-leave-to .playbackButton2  {
+  transform: scale(1.8) translate(150px, 0);
+  opacity: 0;
+}
+
+.navLeft-enter-active .playbackButton3 {
+  transition: all .4s .4s;
+}
+.navLeft-leave-active .playbackButton3 {
+  transition: all .3s;
+}
+.navLeft-enter .playbackButton3, .navLeft-leave-to .playbackButton3  {
+  transform: scale(1.8) translate(150px, 0);
+  opacity: 0;
+}
+
+/*
+  Hearts animation
+*/
+
+.hearts-enter-active {
+  transition: all 1s;
+}
+.hearts-leave-active {
+  transition: all 1s;
+}
+.hearts-enter, .hearts-leave-to  {
+  opacity: 1;
+}
+
+.hearts-enter-active .heartsInit {
+  transition: all 1s cubic-bezier(.53,.09,.81,.18);
+}
+.hearts-leave-active .heartsInit {
+  transition: all 1s;
+}
+.hearts-enter .heartsInit   {
+  transform: scale(0.4);
+}
+.hearts-leave-to .heartsInit  {
+  opacity: 0;
+}
 
 </style>
